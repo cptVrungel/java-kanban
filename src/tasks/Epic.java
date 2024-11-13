@@ -13,7 +13,13 @@ public class Epic extends Task {
         super(name, description);
     }
 
-    public void setStatus(Collection<SubTask> values) {
+    @Override
+    public Status getStatus() {
+        return status;
+    }
+
+
+    public void setStatus(ArrayList<SubTask> values) {
         if (epicSubTasks.isEmpty()) {
             status = Status.NEW;
             return;

@@ -1,11 +1,44 @@
+import manager.HistoryManager;
+import manager.InMemoryTaskManager;
+import manager.Managers;
 import manager.TaskManager;
 import tasks.*;
+import java.util.ArrayList;
 
 public class Main {
 
     public static void main(String[] args) {
 
-        TaskManager manager = new TaskManager();
+        Task task1 = new Task("task1", "task1_description", Status.NEW);
+        Task task2 = new Task("task2", "task2_description", Status.NEW);
+        Epic epic1 = new Epic("epic1", "epic1_description");
+        Epic epic2 = new Epic("epic2", "epic2_description");
+        SubTask subTask1 = new SubTask("subTask1", "subTask1_description", Status.IN_PROGRESS, 3);
+        SubTask subTask2 = new SubTask("subTask2", "subTask2_description", Status.NEW, 3);
+        SubTask subTask3 = new SubTask("subTask3", "subTask3_description", Status.NEW, 4);
+
+        TaskManager taskManager = Managers.getDefault();
+        HistoryManager historyMananger = Managers.getDefaultHistory();
+
+        taskManager.addNewTask(task1);
+        taskManager.addNewTask(task1);
+        taskManager.addNewEpic(epic1);
+        taskManager.addNewEpic(epic2);
+        taskManager.addNewSubTask(subTask1);
+        taskManager.addNewSubTask(subTask2);
+        taskManager.addNewSubTask(subTask3);
+
+        taskManager.getTask(1);
+        taskManager.getEpic(4);
+        taskManager.getSubTask(5);
+        System.out.println(historyMananger.getHistory());
+
+        taskManager.getSubTask(6);
+        System.out.println("------------------------");
+        System.out.println(historyMananger.getHistory());
+
+
+        /*InMemoryTaskManager manager = new InMemoryTaskManager();
 
         Task task1 = new Task("task1", "task1_description", Status.NEW);
         Task task2 = new Task("task2", "task2_description", Status.NEW);
@@ -51,6 +84,6 @@ public class Main {
         System.out.println(manager.getTasks());
         System.out.println(manager.getEpics());
         System.out.println(manager.getEpicSubTasks(4));
-        System.out.println(manager.getSubTasks());
+        System.out.println(manager.getSubTasks());*/
     }
 }
