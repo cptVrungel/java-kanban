@@ -18,7 +18,6 @@ public class Main {
         SubTask subTask3 = new SubTask("subTask3", "subTask3_description", Status.NEW, 4);
 
         TaskManager taskManager = Managers.getDefault();
-        HistoryManager historyMananger = Managers.getDefaultHistory();
 
         taskManager.addNewTask(task1);
         taskManager.addNewTask(task1);
@@ -31,12 +30,11 @@ public class Main {
         taskManager.getTask(1);
         taskManager.getEpic(4);
         taskManager.getSubTask(5);
-        System.out.println(historyMananger.getHistory());
+        System.out.println(taskManager.getHistory());
 
         taskManager.getSubTask(6);
         System.out.println("------------------------");
-        System.out.println(historyMananger.getHistory());
-
+        System.out.println(taskManager.getHistory());
 
         /*InMemoryTaskManager manager = new InMemoryTaskManager();
 

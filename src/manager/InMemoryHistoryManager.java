@@ -1,23 +1,28 @@
 package manager;
 
-import tasks.Task;
-
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import tasks.*;
+
 
 public class InMemoryHistoryManager implements HistoryManager {
 
-    private static ArrayList<Task> history = new ArrayList<>();
+    private static final int HISTORYSIZE = 10;
+    private List<Task> history = new LinkedList<>();
 
     @Override
-    public void add(Task task) {
-        if (history.size() == 10){
-            history.removeFirst();
+    public void add(Task task){
+        if (task != null) {
+            if (history.size() == HISTORYSIZE) {
+                history.removeFirst();
+            }
+            history.addLast(task);
         }
-        history.add(task);
     }
 
     @Override
-    public ArrayList<Task> getHistory() {
-        return history;
+    public List<Task> getHistory() {
+        return new LinkedList<Task>(history);
     }
 }

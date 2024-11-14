@@ -4,11 +4,15 @@ import tasks.Epic;
 import tasks.SubTask;
 import tasks.Task;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public interface TaskManager {
     void addNewTask(Task task);
+
+    List<Task> getHistory();
 
     void deleteTask(int id);
 
