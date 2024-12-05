@@ -1,24 +1,24 @@
 package tests;
 
-import manager.InMemoryTaskManager.*;
-import static org.junit.jupiter.api.Assertions.*;
-
-import manager.*;
+import manager.HistoryManager;
+import manager.Managers;
+import manager.TaskManager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import tasks.*;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.ArrayList;
+import tasks.Epic;
+import tasks.Status;
+import tasks.SubTask;
+import tasks.Task;
 
 class InMemoryTaskManagerTest {
 
     static TaskManager manager = Managers.getDefault();
-    static HistoryManager historyManager = Managers.getDefaultHistory();
+
 
     @BeforeAll
-    public static void create(){
+    public static void create() {
         Task task1 = new Task("task1", "task1_description", Status.NEW);
         manager.addNewTask(task1);
         Task task2 = new Task("task2", "task2_description", Status.NEW);
@@ -34,9 +34,15 @@ class InMemoryTaskManagerTest {
         SubTask subTask3 = new SubTask("subTask3", "subTask3_description", Status.NEW, 4);
         manager.addNewSubTask(subTask3);
     }
+
+    @BeforeEach
+    public void cleanHistory() {
+        manager.cleanHistory();
+    }
+
     // Первые шесть тестов - проверка равенство по id (или неравенство, если id разные)
     @Test
-    public void TasksShouldBeEqualIfIdIsEqual(){
+    public void TasksShouldBeEqualIfIdIsEqual() {
         Task task1 = manager.getTask(1);
         Task task2 = manager.getTask(1);
         Assertions.assertNotNull(task1);
@@ -45,7 +51,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    public void TasksShouldNotBeEqualIfIdIsEqual(){
+    public void TasksShouldNotBeEqualIfIdIsEqual() {
         Task task1 = manager.getTask(1);
         Task task2 = manager.getTask(2);
         Assertions.assertNotNull(task1);
@@ -54,7 +60,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    public void EpicsShouldBeEqualIfIdIsEqual(){
+    public void EpicsShouldBeEqualIfIdIsEqual() {
         Task epic1 = manager.getEpic(3);
         Task epic2 = manager.getEpic(3);
         Assertions.assertNotNull(epic1);
@@ -63,7 +69,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    public void EpicsShouldNotBeEqualIfIdIsEqual(){
+    public void EpicsShouldNotBeEqualIfIdIsEqual() {
         Task epic1 = manager.getEpic(3);
         Task epic2 = manager.getEpic(4);
         Assertions.assertNotNull(epic1);
@@ -72,7 +78,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    public void SubTasksShouldBeEqualIfIdIsEqual(){
+    public void SubTasksShouldBeEqualIfIdIsEqual() {
         SubTask subTask1 = manager.getSubTask(5);
         SubTask subTask2 = manager.getSubTask(5);
         Assertions.assertNotNull(subTask1);
@@ -81,7 +87,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    public void SubTasksShouldNotBeEqualIfIdIsEqual(){
+    public void SubTasksShouldNotBeEqualIfIdIsEqual() {
         SubTask subTask1 = manager.getSubTask(5);
         SubTask subTask2 = manager.getSubTask(6);
         Assertions.assertNotNull(subTask1);
@@ -90,16 +96,16 @@ class InMemoryTaskManagerTest {
     }
 
     @Test // Тест на сохранность данных задачи после добавления "В историю"
-    public void TaskHistoryEquals(){
+    public void TaskHistoryEquals() {
         Task subTask1 = manager.getSubTask(5);
-        Task subTask2 = historyManager.getHistory().getFirst();
+        Task subTask2 = manager.getHistory().get(0);
         Assertions.assertNotNull(subTask1);
         Assertions.assertNotNull(subTask2);
         Assertions.assertEquals(subTask1, subTask2);
     }
 
     @Test // Тест на создание объектов-менеджеров
-    public void ManagersAreNotNull(){
+    public void ManagersAreNotNull() {
         TaskManager taskManager = Managers.getDefault();
         HistoryManager historyManager = Managers.getDefaultHistory();
         Assertions.assertNotNull(taskManager);
@@ -107,7 +113,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test // Тест сохранение данных задачи после добавления в HashMap
-    public void TasksAreEqualWhenAddedToMap(){
+    public void TasksAreEqualWhenAddedToMap() {
         Task task3 = new Task("task3", "task3_description", Status.NEW);
         manager.addNewTask(task3);
         Task task4 = manager.getTask(8);
@@ -117,7 +123,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test // Тест на корректное определение статуса эпика
-    public void CorrectEpicStatus(){
+    public void CorrectEpicStatus() {
         SubTask subtask1 = manager.getSubTask(5);
         subtask1.setStatus(Status.IN_PROGRESS);
         manager.updateSubTask(subtask1);
@@ -127,5 +133,24 @@ class InMemoryTaskManagerTest {
         subtask2.setStatus(Status.DONE);
         manager.updateSubTask(subtask2);
         Assertions.assertEquals(manager.getEpic(3).getStatus(), Status.DONE);
+    }
+
+    @Test // Тест на корректиность размера списка истории при вызове задачи, которая уже вызывалась ранее.
+    public void HistorySizeAdd() {
+        manager.getTask(1);
+        manager.getSubTask(5);
+        manager.getEpic(3);
+        manager.getTask(1);
+        Integer k = manager.getHistory().size();
+        Assertions.assertEquals(k, 3);
+    }
+
+    @Test // Тест на корректность размера списка истории при удалении задачи
+    public void HistorySizeDelete() {
+        manager.getTask(1);
+        manager.getTask(2);
+        manager.getSubTask(6);
+        manager.deleteTask(2);
+        Assertions.assertEquals(manager.getHistory().size(), 2);
     }
 }
