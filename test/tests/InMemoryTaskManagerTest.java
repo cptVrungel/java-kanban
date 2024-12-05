@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import manager.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import tasks.*;
 import java.util.Collection;
@@ -15,7 +16,8 @@ import java.util.ArrayList;
 class InMemoryTaskManagerTest {
 
     static TaskManager manager = Managers.getDefault();
-    static HistoryManager historyManager = Managers.getDefaultHistory();
+
+
 
     @BeforeAll
     public static void create(){
@@ -34,6 +36,12 @@ class InMemoryTaskManagerTest {
         SubTask subTask3 = new SubTask("subTask3", "subTask3_description", Status.NEW, 4);
         manager.addNewSubTask(subTask3);
     }
+
+    @BeforeEach
+    public void cleanHistory(){
+        manager.cleanHistory();
+    }
+
     // Первые шесть тестов - проверка равенство по id (или неравенство, если id разные)
     @Test
     public void TasksShouldBeEqualIfIdIsEqual(){
@@ -92,7 +100,7 @@ class InMemoryTaskManagerTest {
     @Test // Тест на сохранность данных задачи после добавления "В историю"
     public void TaskHistoryEquals(){
         Task subTask1 = manager.getSubTask(5);
-        Task subTask2 = historyManager.getHistory().getFirst();
+        Task subTask2 = manager.getHistory().get(0);
         Assertions.assertNotNull(subTask1);
         Assertions.assertNotNull(subTask2);
         Assertions.assertEquals(subTask1, subTask2);
@@ -127,5 +135,24 @@ class InMemoryTaskManagerTest {
         subtask2.setStatus(Status.DONE);
         manager.updateSubTask(subtask2);
         Assertions.assertEquals(manager.getEpic(3).getStatus(), Status.DONE);
+    }
+
+    @Test // Тест на корректиность размера списка истории при вызове задачи, которая уже вызывалась ранее.
+    public void HistorySizeAdd(){
+        manager.getTask(1);
+        manager.getSubTask(5);
+        manager.getEpic(3);
+        manager.getTask(1);
+        Integer k = manager.getHistory().size();
+        Assertions.assertEquals(k, 3);
+    }
+
+    @Test // Тест на корректность размера списка истории при удалении задачи
+    public void HistorySizeDelete() {
+        manager.getTask(1);
+        manager.getTask(2);
+        manager.getSubTask(6);
+        manager.deleteTask(2);
+        Assertions.assertEquals(manager.getHistory().size(), 2);
     }
 }

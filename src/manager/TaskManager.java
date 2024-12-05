@@ -10,6 +10,10 @@ import java.util.Collection;
 import java.util.List;
 
 public interface TaskManager {
+    int returnCounter();
+
+    void cleanHistory();
+
     void addNewTask(Task task);
 
     List<Task> getHistory();
