@@ -9,19 +9,8 @@ import java.util.Map;
 
 public class InMemoryHistoryManager implements HistoryManager {
 
-    private final Map<Integer, Node<Task>> historyMap = new HashMap<>();
-
-    private Node<Task> head;
-    private Node<Task> tail;
-
-    private int size = 0;
-
-    public int size() {
-        return this.size;
-    }
-
-    public void removeNode(Node<Task> node) {
-        Node<Task> next = node.next;
+    private void removeNode(Node<Task> node) {
+        final Node<Task> next = node.next;
         Node<Task> prev = node.prev;
         if (prev == null) {
             head = node.next;
@@ -37,26 +26,48 @@ public class InMemoryHistoryManager implements HistoryManager {
         }
     }
 
+    private final Map<Integer, Node<Task>> historyMap = new HashMap<>();
+
+    private Node<Task> head;
+    private Node<Task> tail;
+
+    private int size = 0;
+
+    public int size() {
+        return this.size;
+    }
+
     @Override
     public void remove(int id) {
         if (historyMap.containsKey(id)) {
             removeNode(historyMap.get(id));
             historyMap.remove(id);
+            size--;
         }
     }
 
     @Override
     public void add(Task task) {
-        remove(task.getId());
-        Node<Task> oldTail = tail;
-        Node<Task> newNode = new Node<>(oldTail, task, null);
-        tail = newNode;
-        if (oldTail == null)
-            head = newNode;
-        else
-            oldTail.next = newNode;
-        size++;
-        historyMap.put(task.getId(), newNode);
+        if (task != null) {
+            remove(task.getId());
+            Node<Task> oldTail = tail;
+            Node<Task> newNode = new Node<>(oldTail, task, null);
+            tail = newNode;
+            if (oldTail == null)
+                head = newNode;
+            else
+                oldTail.next = newNode;
+            size++;
+            historyMap.put(task.getId(), newNode);
+        }
+    }
+
+    @Override
+    public void cleanHistory() {
+        historyMap.clear();
+        size = 0;
+        head = null;
+        tail = null;
     }
 
 
@@ -74,13 +85,15 @@ public class InMemoryHistoryManager implements HistoryManager {
         return history;
     }
 
-    @Override
-    public void cleanHistory() {
-        for (int key : new HashMap<>(historyMap).keySet()) {
-            remove(key);
+    private static class Node<E> {
+        public E data;
+        public Node<E> next;
+        public Node<E> prev;
+
+        public Node(Node<E> prev, E data, Node<E> next) {
+            this.data = data;
+            this.next = next;
+            this.prev = prev;
         }
-        size = 0;
-        head = null;
-        tail = null;
     }
 }
