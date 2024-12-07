@@ -1,9 +1,9 @@
-import manager.HistoryManager;
-import manager.InMemoryTaskManager;
 import manager.Managers;
 import manager.TaskManager;
-import tasks.*;
-import java.util.ArrayList;
+import tasks.Epic;
+import tasks.Status;
+import tasks.SubTask;
+import tasks.Task;
 
 public class Main {
 
@@ -15,12 +15,12 @@ public class Main {
         Epic epic2 = new Epic("epic2", "epic2_description");
         SubTask subTask1 = new SubTask("subTask1", "subTask1_description", Status.IN_PROGRESS, 3);
         SubTask subTask2 = new SubTask("subTask2", "subTask2_description", Status.NEW, 3);
-        SubTask subTask3 = new SubTask("subTask3", "subTask3_description", Status.NEW, 4);
+        SubTask subTask3 = new SubTask("subTask3", "subTask3_description", Status.IN_PROGRESS, 4);
 
         TaskManager taskManager = Managers.getDefault();
 
         taskManager.addNewTask(task1);
-        taskManager.addNewTask(task1);
+        taskManager.addNewTask(task2);
         taskManager.addNewEpic(epic1);
         taskManager.addNewEpic(epic2);
         taskManager.addNewSubTask(subTask1);
@@ -28,13 +28,23 @@ public class Main {
         taskManager.addNewSubTask(subTask3);
 
         taskManager.getTask(1);
-        taskManager.getEpic(4);
+        taskManager.getTask(2);
         taskManager.getSubTask(5);
         System.out.println(taskManager.getHistory());
 
         taskManager.getSubTask(6);
-        System.out.println("------------------------");
+        System.out.println("1-----------------------");
         System.out.println(taskManager.getHistory());
+        taskManager.getTask(1);
+        System.out.println("2-----------------------");
+        System.out.println(taskManager.getHistory());
+        taskManager.cleanHistory();
+        System.out.println("3-----------------------");
+        System.out.println(taskManager.getHistory());
+        taskManager.getTask(1);
+        System.out.println("4-----------------------");
+        System.out.println(taskManager.getHistory());
+
 
         /*InMemoryTaskManager manager = new InMemoryTaskManager();
 
