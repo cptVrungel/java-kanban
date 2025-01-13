@@ -52,4 +52,6 @@ public interface TaskManager {
     void updateSubTask(SubTask subTask);
 
     Collection<SubTask> getSubTasks();
+
+    void setCounter(int count);
 }

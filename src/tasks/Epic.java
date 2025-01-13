@@ -13,11 +13,6 @@ public class Epic extends Task {
     }
 
     @Override
-    public Type getType() {
-        return Type.EPIC;
-    }
-
-    @Override
     public Status getStatus() {
         return status;
     }
