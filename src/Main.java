@@ -9,7 +9,67 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Task task1 = new Task("task1", "task1_description", Status.NEW);
+        TaskManager newManager = Managers.getDrive("src/manager/drive.txt");
+
+        System.out.println(newManager.getTasks());
+        System.out.println("----------------------");
+        System.out.println(newManager.getEpics());
+        System.out.println("----------------------");
+        System.out.println(newManager.getSubTasks());
+
+        Task task4 = new Task("task4", "task4_description", Status.NEW);
+        Epic epic5 = new Epic("epic5", "epic5_description");
+        Epic epic6 = new Epic("epic6", "epic6_description");
+        SubTask subTask6 = new SubTask("subTask6", "subTas6_description", Status.IN_PROGRESS, 5);
+
+        newManager.addNewTask(task4);
+        newManager.addNewEpic(epic5);
+        newManager.addNewEpic(epic6);
+        newManager.addNewSubTask(subTask6);
+
+        System.out.println(newManager.getTasks());
+        System.out.println("----------------------");
+        System.out.println(newManager.getEpics());
+        System.out.println("----------------------");
+        System.out.println(newManager.getSubTasks());
+
+        /*Task task1 = new Task("task1", "task1_description", Status.NEW);
+        Epic epic1 = new Epic("epic1", "epic1_description");
+        Epic epic2 = new Epic("epic2", "epic2_description");
+        SubTask subTask1 = new SubTask("subTask1", "subTask1_description", Status.IN_PROGRESS, 2);
+
+        TaskManager taskManager = Managers.getDefault();
+        taskManager.addNewTask(task1);
+        taskManager.addNewTask(epic1);
+        taskManager.addNewTask(epic2);
+        taskManager.addNewTask(subTask1);
+
+        //TaskManager taskManager = Managers.getDrive("src/manager/drive.txt");
+        //taskManager.addNewTask(task1);
+
+        System.out.println(AnyTaskToString(epic1));
+    }
+
+        public static String AnyTaskToString(Task task){
+            String line = "";
+            if (task.getType().equals(Type.TASK)){
+                line = (task.getId() + ", " + task.getType()+ ", " + task.getName() + ", " +
+                        task.getStatus() + ", " + task.getDescription());
+            }
+            else if (task.getType().equals(Type.EPIC)){
+                line = (task.getId() + ", " + task.getType()+ ", " + task.getName() + ", " +
+                        task.getStatus() + ", " + task.getDescription());
+            }
+            else if (task.getType().equals(Type.SUBTASK)) {
+                    SubTask subTask = (SubTask) task;
+                    line = (subTask.getId() + ", " + subTask.getType() + ", " + subTask.getName() + ", " +
+                            subTask.getStatus() + ", " + subTask.getDescription() + ", " + subTask.getEpicId());
+            }
+            return line;
+        }*/
+
+
+        /*Task task1 = new Task("task1", "task1_description", Status.NEW);
         Task task2 = new Task("task2", "task2_description", Status.NEW);
         Epic epic1 = new Epic("epic1", "epic1_description");
         Epic epic2 = new Epic("epic2", "epic2_description");
@@ -95,3 +155,4 @@ public class Main {
         System.out.println(manager.getSubTasks());*/
     }
 }
+

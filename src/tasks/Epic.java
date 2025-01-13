@@ -9,13 +9,18 @@ public class Epic extends Task {
 
     public Epic(String name, String description) {
         super(name, description);
+        this.type = Type.EPIC;
+    }
+
+    @Override
+    public Type getType() {
+        return Type.EPIC;
     }
 
     @Override
     public Status getStatus() {
         return status;
     }
-
 
     public void setStatus(ArrayList<SubTask> values) {
         if (epicSubTasks.isEmpty()) {
@@ -52,6 +57,6 @@ public class Epic extends Task {
                 ", description='" + description + '\'' +
                 ", status=" + status +
                 ", id=" + id +
-                "} ";
+                "}";
     }
 }

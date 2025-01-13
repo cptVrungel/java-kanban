@@ -8,6 +8,7 @@ public class Task {
     protected String description;
     protected Status status;
     protected int id;
+    protected Type type = Type.TASK;
 
     public Task(String name, String description) {
         this.name = name;
@@ -34,6 +35,10 @@ public class Task {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Type getType() {
+        return type;
     }
 
     public Status getStatus() {
