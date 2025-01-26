@@ -8,11 +8,11 @@ import java.util.*;
 
 public class InMemoryTaskManager implements TaskManager {
 
-    private final Map<Integer, Task> tasks = new HashMap<>();
-    private final Map<Integer, Epic> epics = new HashMap<>();
-    private final Map<Integer, SubTask> subTasks = new HashMap<>();
+    protected final Map<Integer, Task> tasks = new HashMap<>();
+    protected final Map<Integer, Epic> epics = new HashMap<>();
+    protected final Map<Integer, SubTask> subTasks = new HashMap<>();
 
-    private int counter = 1;
+    protected int counter = 1;
 
     private final HistoryManager historyManager = Managers.getDefaultHistory();
 
@@ -24,6 +24,11 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public int returnCounter() {
         return counter;
+    }
+
+    @Override
+    public void setCounter(int count) {
+        counter = count;
     }
 
     @Override
