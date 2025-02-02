@@ -8,8 +8,7 @@ public class Managers {
     }
 
     public static TaskManager getDrive(Path path) {
-        TaskManager manager = FileBackedTaskManager.loadFromFile(path);
-        return manager;
+        return FileBackedTaskManager.loadFromFile(path);
     }
 
     public static TaskManager getDefault() {

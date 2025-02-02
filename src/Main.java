@@ -4,57 +4,63 @@ import manager.TaskManager;
 import tasks.Epic;
 import tasks.Status;
 import tasks.SubTask;
+import tasks.Task;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 public class Main {
 
     public static void main(String[] args) {
 
-        Path path = Paths.get("src/manager/drive.txt");
-
-
         try {
-            TaskManager newManager = Managers.getDrive(path);
+            Task task = new Task("task1", "task1_description", Status.NEW, LocalDateTime.of
+                    (2025, 04, 15, 15, 30), Duration.ofMinutes(45));
 
-            System.out.println(newManager.getTasks());
-            System.out.println("----------------------");
-            System.out.println(newManager.getEpics());
-            System.out.println("----------------------");
-            System.out.println(newManager.getSubTasks());
+            //TaskManager x = Managers.getDefault();
 
-            /*Task task2 = new Task("task4", "task4_description", Status.NEW);
-            Epic epic2 = new Epic("epic5", "epic5_description");
-            Epic epic3 = new Epic("epic6", "epic6_description");
-            SubTask subTask2 = new SubTask("subTask6", "subTas6_description", Status.IN_PROGRESS, 5);
+            //System.out.println(x.addNewTask(task));
 
-            newManager.addNewTask(task2);
-            newManager.deleteTask(4);
-            newManager.addNewEpic(epic2);
-            //newManager.addNewEpic(epic3);
-            newManager.addNewSubTask(subTask2);
+            Epic epic = new Epic("Epic1", "epic1_description");
 
-            System.out.println(">>>>>>>>>>>>>>>>>>>>>>");
-            System.out.println(newManager.getTasks());
-            System.out.println("----------------------");
-            System.out.println(newManager.getEpics());
-            System.out.println("----------------------");
-            System.out.println(newManager.getSubTasks());*/
+            //System.out.println(x.addNewEpic(epic));
 
-            /*Task task3 = new Task("task3", "task3_description", Status.NEW);
-            Epic epic2 = new Epic("epic5", "epic5_description");
-            Epic epic3 = new Epic("epic6", "epic6_description");
-            SubTask subTask2 = new SubTask("subTask6", "subTas6_description", Status.IN_PROGRESS, 5);
+            SubTask subTask = new SubTask("subTask1", "subTask1_description", Status.DONE, LocalDateTime.of
+                    (2025, 04, 12, 16, 30), Duration.ofMinutes(30), 5);
 
-            newManager.addNewTask(task3);
-            newManager.deleteEpics();*/
-            Epic epic10 = new Epic("epic10", "epic10_description");
-            SubTask subTask10 = new SubTask("subTask10", "subTas10_description", Status.DONE, 4);
-            newManager.addNewEpic(epic10);
-            newManager.addNewSubTask(subTask10);
-        } catch (ManagerSaveException exc) {
-            System.out.println(exc.getMessage());
+            SubTask subTask2 = new SubTask("subTask1", "subTask1_description", Status.DONE, LocalDateTime.of
+                    (2025, 04, 13, 16, 45), Duration.ofMinutes(30), 5);
+
+            SubTask subTask3 = new SubTask("subTask1", "subTask1_description", Status.IN_PROGRESS, LocalDateTime.of
+                    (2025, 04, 14, 12, 30), Duration.ofMinutes(30), 5);
+
+        /*System.out.println(x.addNewSubTask(subTask));
+        //System.out.println(x.addNewSubTask(subTask2));
+        //System.out.println(x.addNewSubTask(subTask3));
+
+        System.out.println(epic.getEndTime());
+        System.out.println(epic.getDuration());
+
+        System.out.println("----------------------");
+        System.out.println(x.getPrioritizedTasks());
+        System.out.println("----------------------");
+        System.out.println(x.Crosses(subTask, subTask2));
+        System.out.println("----------------------");*/
+
+            Path path = Paths.get("src/manager/drive.txt");
+
+            TaskManager x = Managers.getDrive(path);
+
+            System.out.println(x.addNewTask(task));
+            System.out.println(x.addNewEpic(epic));
+            System.out.println(x.addNewSubTask(subTask));
+            System.out.println(x.addNewSubTask(subTask2));
+            System.out.println(x.addNewSubTask(subTask3));
+
+        } catch (ManagerSaveException e) {
+            System.out.println(e.getMessage());
         }
     }
 }

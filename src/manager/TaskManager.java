@@ -7,13 +7,23 @@ import tasks.Task;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 public interface TaskManager {
+
     int returnCounter();
 
     void cleanHistory();
 
-    void addNewTask(Task task);
+    boolean notCrosses(Task task1, Task task2);
+
+    boolean checkCrossesForAdd(Task task1);
+
+    boolean checkCrossesForUpdate(Task task1);
+
+    Set<Task> getPrioritizedTasks();
+
+    boolean addNewTask(Task task);
 
     List<Task> getHistory();
 
@@ -23,11 +33,11 @@ public interface TaskManager {
 
     Task getTask(int id);
 
-    void updateTask(Task task);
+    boolean updateTask(Task task);
 
     Collection<Task> getTasks();
 
-    void addNewEpic(Epic epic);
+    boolean addNewEpic(Epic epic);
 
     void deleteEpic(int id);
 
@@ -35,13 +45,13 @@ public interface TaskManager {
 
     Epic getEpic(int id);
 
-    void updateEpic(Epic epic);
+    boolean updateEpic(Epic epic);
 
     Collection<Epic> getEpics();
 
     ArrayList<SubTask> getEpicSubTasks(int epicId);
 
-    void addNewSubTask(SubTask subTask);
+    boolean addNewSubTask(SubTask subTask);
 
     void deleteSubTask(int id);
 
@@ -49,7 +59,7 @@ public interface TaskManager {
 
     SubTask getSubTask(int id);
 
-    void updateSubTask(SubTask subTask);
+    boolean updateSubTask(SubTask subTask);
 
     Collection<SubTask> getSubTasks();
 
