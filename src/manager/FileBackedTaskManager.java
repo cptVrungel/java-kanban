@@ -15,7 +15,7 @@ import java.time.format.DateTimeFormatter;
 public class FileBackedTaskManager extends InMemoryTaskManager {
 
     private final Path path;
-    DateTimeFormatter format = DateTimeFormatter.ofPattern("dd MM yyyy; HH:mm");
+    private final DateTimeFormatter format = DateTimeFormatter.ofPattern("dd MM yyyy; HH:mm");
 
     public FileBackedTaskManager(Path path) {
         super();
@@ -53,7 +53,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             }
             manager.setCounter(idCounterMax + 1);
         } catch (IOException e) {
-            System.out.println("Ошибка чтения файла");
+            throw new ManagerSaveException("Ошибка при записи в файл" + path, e);
         }
         return manager;
     }

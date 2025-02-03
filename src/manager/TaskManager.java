@@ -13,13 +13,11 @@ public interface TaskManager {
 
     int returnCounter();
 
+    //boolean checkCrosses(Task task1);
+
     void cleanHistory();
 
-    boolean notCrosses(Task task1, Task task2);
-
-    boolean checkCrossesForAdd(Task task1);
-
-    boolean checkCrossesForUpdate(Task task1);
+    //boolean notCrosses(Task task1, Task task2);
 
     Set<Task> getPrioritizedTasks();
 
@@ -63,5 +61,5 @@ public interface TaskManager {
 
     Collection<SubTask> getSubTasks();
 
-    void setCounter(int count);
+    //void setCounter(int count);
 }

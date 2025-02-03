@@ -27,14 +27,6 @@ public class Task {
         this.duration = duration;
     }
 
-    public LocalDateTime setStartTime(LocalDateTime t) {
-        return this.startTime = t;
-    }
-
-    public Duration setDuration(long minutes) {
-        return this.duration = Duration.ofMinutes(minutes);
-    }
-
     public LocalDateTime getEndTime() {
         return startTime.plus(duration);
     }

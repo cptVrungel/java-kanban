@@ -1,5 +1,6 @@
 package tests;
 
+import manager.InMemoryTaskManager;
 import manager.TaskManager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -88,14 +89,12 @@ abstract class TaskManagerTest<T extends TaskManager> {// Менеджер за�
                 (2025, 04, 10, 12, 30), Duration.ofMinutes(30));
         manager.addNewTask(task1);
         Task task2 = new Task("task2", "task2_description", Status.NEW, LocalDateTime.of
-                (2025, 04, 11, 12, 30), Duration.ofMinutes(30));
-        manager.addNewTask(task2);
+                (2025, 04, 10, 12, 45), Duration.ofMinutes(30));
+        Assertions.assertEquals(manager.addNewTask(task2), false);
         Epic epic1 = new Epic("epic1", "epic1_description");
         manager.addNewEpic(epic1);
-        Assertions.assertEquals(manager.notCrosses(task1, task2), true);
 
-        //проверка на неучет задача с незаданным временем
-        Assertions.assertEquals(manager.notCrosses(epic1, task2), true);
+        Assertions.assertEquals(manager.addNewEpic(epic1), true);
 
         Epic epic2 = new Epic("epic2", "epic2_description");
         manager.addNewEpic(epic2);
@@ -106,12 +105,10 @@ abstract class TaskManagerTest<T extends TaskManager> {// Менеджер за�
                 (2025, 04, 13, 12, 30), Duration.ofMinutes(30), 3);
         manager.addNewSubTask(subTask2);
         SubTask subTask3 = new SubTask("subTask3", "subTask3_description", Status.NEW, LocalDateTime.of
-                (2025, 04, 14, 12, 30), Duration.ofMinutes(30), 4);
+                (2025, 04, 13, 12, 45), Duration.ofMinutes(30), 4);
         manager.addNewSubTask(subTask3);
 
-        //проверка на непересечение эпика с его же подзадачей, у которой самый ранний startTime
-        Assertions.assertEquals(manager.notCrosses(epic1, subTask1), true);
-        Assertions.assertEquals(manager.notCrosses(epic2, subTask3), true);
+        Assertions.assertEquals(manager.addNewSubTask(subTask3), false);
     }
 
 }
