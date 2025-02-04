@@ -17,7 +17,7 @@ public class Main {
 
         try {
             Task task = new Task("task1", "task1_description", Status.NEW, LocalDateTime.of(
-                    2025, 04, 15, 15, 30), Duration.ofMinutes(45));
+                    2025, 04, 11, 16, 30), Duration.ofMinutes(45));
 
             Epic epic = new Epic("Epic1", "epic1_description");
 
@@ -28,7 +28,7 @@ public class Main {
                     2025, 04, 13, 16, 45), Duration.ofMinutes(30), 5);
 
             SubTask subTask3 = new SubTask("subTask1", "subTask1_description", Status.IN_PROGRESS, LocalDateTime.of(
-                    2025, 04, 14, 12, 30), Duration.ofMinutes(30), 5);
+                    2025, 04, 14, 16, 45), Duration.ofMinutes(30), 5);
 
             Path path = Paths.get("src/manager/drive.txt");
 

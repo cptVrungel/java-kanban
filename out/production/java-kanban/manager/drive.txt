@@ -1,4 +1,5 @@
-id,type,name,status,description,epic
+id,type,name,status,description,epic,startTime,endTime,Duration
 1,TASK,Task1,NEW,Description task1,17 04 2025; 18:00,17 04 2025; 19:00,60
-2,EPIC,Epic2,DONE,Description epic2,
+2,EPIC,Epic2,DONE,Description epic2,18 04 2025; 18:00,18 04 2025; 19:00,60
 3,SUBTASK,Sub Task2,DONE,Description sub task3,2,18 04 2025; 18:00,18 04 2025; 19:00,60
+

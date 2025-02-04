@@ -7,7 +7,6 @@ import tasks.Task;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 public interface TaskManager {
 
@@ -19,7 +18,7 @@ public interface TaskManager {
 
     //boolean notCrosses(Task task1, Task task2);
 
-    Set<Task> getPrioritizedTasks();
+    List<Task> getPrioritizedTasks();
 
     boolean addNewTask(Task task);
 

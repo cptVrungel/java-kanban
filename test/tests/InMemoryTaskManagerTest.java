@@ -100,7 +100,7 @@ class InMemoryTaskManagerTest extends TaskManagerTest {
 
         manager.deleteEpic(3);
         size = manager.getHistory().size();
-        Assertions.assertEquals(size, 2);  //удаление из середины
+        Assertions.assertEquals(size, 1);  //удаление из середины
     }
 
     @Test

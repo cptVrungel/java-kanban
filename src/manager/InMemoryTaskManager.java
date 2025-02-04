@@ -31,13 +31,13 @@ public class InMemoryTaskManager implements TaskManager {
         return !(flag1 && flag2);
     }
 
-    private boolean checkCrosses(Task task1) {
-        Set<Task> newSet = getPrioritizedTasks();
+    protected boolean checkCrosses(Task task1) {
+        List<Task> list = getPrioritizedTasks();
         if (priority.contains(task1)) {
-            newSet.remove(task1);
+            list.remove(task1);
         }
-        if (!newSet.isEmpty()) {
-            boolean notCrossed = newSet.stream()
+        if (!list.isEmpty()) {
+            boolean notCrossed = list.stream()
                     .allMatch(streamTask -> notCrosses(task1, streamTask));
             return notCrossed;
         }
@@ -49,8 +49,8 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Set<Task> getPrioritizedTasks() {
-        return priority;
+    public List<Task> getPrioritizedTasks() {
+        return new ArrayList<Task>(priority);
     }
 
     @Override
@@ -127,7 +127,6 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public boolean addNewEpic(Epic epic) {
-        epic.calculateTime(getEpicSubTasks(epic.getId()));
         epics.put(counter, epic);
         epic.setId(counter);
         counter++;
@@ -139,6 +138,8 @@ public class InMemoryTaskManager implements TaskManager {
         Epic epic = epics.get(id);
         epic.epicSubTasks.stream()
                 .forEach(x -> {
+                    priority.remove(getSubTask(x));
+                    historyManager.remove(x);
                     subTasks.remove(x);
                 });
         epics.remove(id);
@@ -168,14 +169,11 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public boolean updateEpic(Epic epic) {
-        if (checkCrosses(epic)) {
             if (epics.containsKey(epic.getId())) {
                 epics.put(epic.getId(), epic);
                 return true;
             }
             return false;
-        }
-        return false;
     }
 
     @Override

@@ -33,17 +33,23 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 if (!line.isBlank()) {
                     Task task = manager.taskFromString(line);
                     if (task.getType().equals(Type.TASK)) {
-                        manager.tasks.put(task.getId(), task);
+                        if (manager.checkCrosses(task)) {
+                            manager.tasks.put(task.getId(), task);
+                            manager.priority.add(task);
+                        }
                     } else if (task.getType().equals(Type.EPIC)) {
                         Epic epic = (Epic) task;
                         manager.epics.put(epic.getId(), epic);
                     } else if (task.getType().equals(Type.SUBTASK)) {
                         SubTask subTask = (SubTask) task;
-                        manager.subTasks.put(subTask.getId(), subTask);
-                        Epic epic = manager.getEpic(subTask.getEpicId());
-                        epic.epicSubTasks.add(subTask.getId());
-                        epic.setStatus(manager.getEpicSubTasks(subTask.getEpicId()));
-                        epic.calculateTime(manager.getEpicSubTasks(subTask.getEpicId()));
+                        if (manager.checkCrosses(subTask)) {
+                            manager.subTasks.put(subTask.getId(), subTask);
+                            manager.priority.add(subTask);
+                            Epic epic = manager.getEpic(subTask.getEpicId());
+                            epic.epicSubTasks.add(subTask.getId());
+                            epic.setStatus(manager.getEpicSubTasks(subTask.getEpicId()));
+                            epic.calculateTime(manager.getEpicSubTasks(subTask.getEpicId()));
+                        }
                     }
                     String[] searchMaxCounter = line.split(",");
                     if (Integer.parseInt(searchMaxCounter[0]) > idCounterMax) {
@@ -163,7 +169,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     @Override
     public boolean addNewSubTask(SubTask subTask) {
         boolean flag = super.addNewSubTask(subTask);
-            save();
+        save();
         return flag;
     }
 
