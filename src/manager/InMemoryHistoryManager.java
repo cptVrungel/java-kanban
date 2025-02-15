@@ -9,6 +9,11 @@ import java.util.Map;
 
 public class InMemoryHistoryManager implements HistoryManager {
 
+    private final Map<Integer, Node<Task>> historyMap = new HashMap<>();
+    private Node<Task> head;
+    private Node<Task> tail;
+    private int size = 0;
+
     private void removeNode(Node<Task> node) {
         final Node<Task> next = node.next;
         Node<Task> prev = node.prev;
@@ -25,13 +30,6 @@ public class InMemoryHistoryManager implements HistoryManager {
             prev.next = next;
         }
     }
-
-    private final Map<Integer, Node<Task>> historyMap = new HashMap<>();
-
-    private Node<Task> head;
-    private Node<Task> tail;
-
-    private int size = 0;
 
     public int size() {
         return this.size;
