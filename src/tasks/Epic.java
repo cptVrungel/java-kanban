@@ -9,13 +9,19 @@ import java.util.Objects;
 
 public class Epic extends Task {
 
-    public ArrayList<Integer> epicSubTasks = new ArrayList<>();
-    private Status status = Status.NEW;
+    public ArrayList<Integer> epicSubTasks;
     private LocalDateTime endTime;
 
     public Epic(String name, String description) {
         super(name, description);
         this.type = Type.EPIC;
+        this.status = Status.NEW;
+        this.epicSubTasks = new ArrayList<>();
+    }
+
+    @Override
+    public Type getType() {
+        return Type.EPIC;
     }
 
     @Override
@@ -55,7 +61,7 @@ public class Epic extends Task {
     }
 
     public void setStatus(ArrayList<SubTask> values) {
-        if (epicSubTasks.isEmpty()) {
+        if (values == null && epicSubTasks.isEmpty()) {
             status = Status.NEW;
             return;
         }
