@@ -74,7 +74,7 @@ public class TasksHandler extends BaseHttpHandler {
 
     private void get_tasks(HttpExchange exchange) throws IOException {
         try {
-            String response = getGson().toJson(getManager().getTasks());
+            String response = BaseHttpHandler.gson.toJson(getManager().getTasks());
             sendText(exchange, response, 200);
         } catch (JsonSyntaxException e) {
             e.printStackTrace();
@@ -86,9 +86,8 @@ public class TasksHandler extends BaseHttpHandler {
             Integer id = getId(exchange);
             if (id != null) {
                 Task task = getManager().getTask(id);
-                //System.out.println(getManager().getHistory().size());
                 if (task != null) {
-                    String response = getGson().toJson(task);
+                    String response = BaseHttpHandler.gson.toJson(task);
                     sendText(exchange, response, 200);
                 } else {
                     sendNotFound(exchange);
@@ -105,7 +104,7 @@ public class TasksHandler extends BaseHttpHandler {
         try {
             InputStream input = exchange.getRequestBody();
             String body = new String(input.readAllBytes(), StandardCharsets.UTF_8);
-            Task task = getGson().fromJson(body, Task.class);
+            Task task = BaseHttpHandler.gson.fromJson(body, Task.class);
             boolean flag;
             if (task.getId() == 0) {
                 flag = getManager().addNewTask(task);
@@ -114,7 +113,6 @@ public class TasksHandler extends BaseHttpHandler {
             }
             if (flag) {
                 sendText(exchange, "Задача добавлена", 201);
-                //System.out.println(getManager().getPrioritizedTasks());
             } else {
                 sendHasInteractions(exchange);
             }
@@ -144,7 +142,7 @@ public class TasksHandler extends BaseHttpHandler {
 
     private void get_epics(HttpExchange exchange) throws IOException {
         try {
-            String response = getGson().toJson(getManager().getEpics());
+            String response = BaseHttpHandler.gson.toJson(getManager().getEpics());
             sendText(exchange, response, 200);
         } catch (JsonSyntaxException e) {
             e.printStackTrace();
@@ -157,7 +155,7 @@ public class TasksHandler extends BaseHttpHandler {
             if (id != null) {
                 Epic epic = getManager().getEpic(id);
                 if (epic != null) {
-                    String response = getGson().toJson(epic);
+                    String response = BaseHttpHandler.gson.toJson(epic);
                     sendText(exchange, response, 200);
                 } else {
                     sendNotFound(exchange);
@@ -174,12 +172,11 @@ public class TasksHandler extends BaseHttpHandler {
         try {
             InputStream input = exchange.getRequestBody();
             String body = new String(input.readAllBytes(), StandardCharsets.UTF_8);
-            Epic epic = getGson().fromJson(body, Epic.class);
+            Epic epic = BaseHttpHandler.gson.fromJson(body, Epic.class);
             epic.setStatus(getManager().getEpicSubTasks(epic.getId()));
             boolean flag = getManager().addNewEpic(epic);
             if (flag) {
                 sendText(exchange, "Задача-эпик добавлена", 201);
-                //System.out.println(getManager().getEpics());
             } else {
                 sendHasInteractions(exchange);
             }
@@ -210,7 +207,7 @@ public class TasksHandler extends BaseHttpHandler {
 
     private void get_subTasks(HttpExchange exchange) throws IOException {
         try {
-            String response = getGson().toJson(getManager().getSubTasks());
+            String response = BaseHttpHandler.gson.toJson(getManager().getSubTasks());
             sendText(exchange, response, 200);
         } catch (JsonSyntaxException e) {
             e.printStackTrace();
@@ -223,7 +220,7 @@ public class TasksHandler extends BaseHttpHandler {
             if (id != null) {
                 SubTask subTask = getManager().getSubTask(id);
                 if (subTask != null) {
-                    String response = getGson().toJson(subTask);
+                    String response = BaseHttpHandler.gson.toJson(subTask);
                     sendText(exchange, response, 200);
                 } else {
                     sendNotFound(exchange);
@@ -240,7 +237,7 @@ public class TasksHandler extends BaseHttpHandler {
         try {
             InputStream input = exchange.getRequestBody();
             String body = new String(input.readAllBytes(), StandardCharsets.UTF_8);
-            SubTask subTask = getGson().fromJson(body, SubTask.class);
+            SubTask subTask = BaseHttpHandler.gson.fromJson(body, SubTask.class);
             boolean flag;
             if (subTask.getId() == 0) {
                 flag = getManager().addNewSubTask(subTask);
@@ -249,7 +246,6 @@ public class TasksHandler extends BaseHttpHandler {
             }
             if (flag) {
                 sendText(exchange, "Задача добавлена", 201);
-                //System.out.println(getManager().getPrioritizedTasks());
             } else {
                 sendHasInteractions(exchange);
             }
@@ -283,7 +279,7 @@ public class TasksHandler extends BaseHttpHandler {
             if (id != null) {
                 Epic epic = getManager().getEpic(id);
                 if (epic != null) {
-                    String response = getGson().toJson(getManager().getEpicSubTasks(id));
+                    String response = BaseHttpHandler.gson.toJson(getManager().getEpicSubTasks(id));
                     sendText(exchange, response, 200);
                 } else {
                     sendNotFound(exchange);
@@ -296,18 +292,18 @@ public class TasksHandler extends BaseHttpHandler {
         }
     }
 
-    public void priority(HttpExchange exchange) {
+    private void priority(HttpExchange exchange) {
         try {
-            String body = getGson().toJson(getManager().getPrioritizedTasks());
+            String body = BaseHttpHandler.gson.toJson(getManager().getPrioritizedTasks());
             sendText(exchange, body, 200);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void history(HttpExchange exchange) {
+    private void history(HttpExchange exchange) {
         try {
-            String body = getGson().toJson(getManager().getHistory());
+            String body = BaseHttpHandler.gson.toJson(getManager().getHistory());
             sendText(exchange, body, 200);
         } catch (IOException e) {
             e.printStackTrace();

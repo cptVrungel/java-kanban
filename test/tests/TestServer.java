@@ -3,6 +3,7 @@ package tests;
 import com.google.gson.Gson;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
+import manager.BaseHttpHandler;
 import manager.HttpTaskServer;
 import manager.TaskManager;
 import manager.TasksHandler;
@@ -34,8 +35,8 @@ public class TestServer {
     TaskManager manager;
 
     public TestServer() throws IOException {
-        this.gson = handler.getGson();
         this.manager = handler.getManager();
+        this.gson = BaseHttpHandler.gson;
     }
 
     @BeforeEach
@@ -54,7 +55,7 @@ public class TestServer {
     @Test
     public void testAddTask() throws IOException, InterruptedException {
         Task task = new Task("Test 2", "Testing task 2", Status.NEW, LocalDateTime.now(), Duration.ofMinutes(5));
-        String taskJson = gson.toJson(task);
+        String taskJson = BaseHttpHandler.gson.toJson(task);
 
         HttpClient client = HttpClient.newHttpClient();
         URI url = URI.create("http://localhost:8080/tasks");

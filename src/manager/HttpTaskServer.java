@@ -8,9 +8,10 @@ import java.net.InetSocketAddress;
 public class HttpTaskServer {
 
     private final HttpServer server;
+    private static final int PORT = 8080;
 
     public HttpTaskServer(TasksHandler handler) throws IOException {
-        this.server = HttpServer.create(new InetSocketAddress(8080), 0);
+        this.server = HttpServer.create(new InetSocketAddress(PORT), 0);
 
         server.createContext("/tasks", handler);
         server.createContext("/epics", handler);
