@@ -10,7 +10,7 @@ public class Task {
     protected String description;
     protected Status status;
     protected int id;
-    protected Type type = Type.TASK;
+    protected Type type;
     protected LocalDateTime startTime;
     protected Duration duration;
 
@@ -25,6 +25,7 @@ public class Task {
         this.status = status;
         this.startTime = startTime;
         this.duration = duration;
+        this.type = Type.TASK;
     }
 
     public LocalDateTime getEndTime() {
@@ -55,8 +56,12 @@ public class Task {
         this.description = description;
     }
 
+    public void setType(Type type) {
+        this.type = type;
+    }
+
     public Type getType() {
-        return type;
+        return Type.TASK;
     }
 
     public Status getStatus() {
